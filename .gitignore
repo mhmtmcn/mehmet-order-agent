@@ -1,4 +1,19 @@
+# Bağımlılıklar
 node_modules/
+
+# Gizli ayarlar — ASLA commit edilmez (API anahtarı, URL)
 .env
+.env.*
+!.env.example
+
+# Chrome otomasyon profili (oturum, cookie) — ASLA commit edilmez
 profile/
+
+# Tur kayıtları (sipariş verisi, ekran görüntüleri)
 runs/
+
+# Loglar ve sistem dosyaları
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
