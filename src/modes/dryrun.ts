@@ -14,9 +14,7 @@ if (Object.keys(actionSelectors).length === 0) {
 }
 
 const log = new RunLog("dryrun");
-const ctx = await openBrowser();
-const first = ctx.pages()[0] ?? (await ctx.newPage());
-if (config.ecUrl) await first.goto(config.ecUrl);
+const { ctx } = await openBrowser();
 
 const MAX_STEPS = 40;
 let outcome = "Adım limiti doldu";
@@ -58,4 +56,5 @@ for (let i = 0; i < MAX_STEPS; i++) {
 
 console.log(`Sonuç: ${outcome}`);
 console.log(`Rapor: ${log.finish(outcome)}`);
-console.log("Tarayıcı açık bırakıldı. Mehmet kontrol edip tamamlar.");
+console.log("Chrome açık bırakıldı. Mehmet kontrol edip tamamlar.");
+process.exit(0);

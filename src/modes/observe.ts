@@ -1,5 +1,4 @@
-import { openBrowser, activePage } from "../browser.js";
-import { config } from "../config.js";
+import { openBrowser, activePage, waitForStop } from "../browser.js";
 import { extractState } from "../extract.js";
 import { getDecider } from "../decider/index.js";
 import { RunLog } from "../report.js";
@@ -10,9 +9,7 @@ const log = new RunLog("observe");
 const decider = getDecider();
 if (!decider) console.log("TYPESAFE_API_KEY yok: yalnızca sayfa durumu kaydedilecek.");
 
-const ctx = await openBrowser();
-const first = ctx.pages()[0] ?? (await ctx.newPage());
-if (config.ecUrl) await first.goto(config.ecUrl);
+const { browser, ctx } = await openBrowser();
 
 let lastKey = "";
 let busy = false;
@@ -36,7 +33,8 @@ const timer = setInterval(async () => {
   }
 }, 2_000);
 
-console.log("Gözlem başladı. Akışı elle yürüt; bitince tarayıcıyı kapat.");
-await new Promise<void>((resolve) => ctx.on("close", () => resolve()));
+console.log("Gözlem başladı. Akışı elle yürüt; bitince bu pencerede Ctrl+C'ye bas (Chrome açık kalır).");
+await waitForStop(browser);
 clearInterval(timer);
 console.log(`Kayıtlar: ${log.finish("Gözlem turu — tıklama yapılmadı.")}`);
+process.exit(0);
